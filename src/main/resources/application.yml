@@ -1,0 +1,27 @@
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+    topic: inTopic
+  cloud:
+    stream:
+      bindings:
+        process-in-0:
+          destination: inTopic
+        process-out-0:
+          destination: outTopic
+      kafka:
+        streams:
+          binder:
+            brokers:
+              - localhost:9092
+            application-id: kafka-streams-app
+            configuration:
+              commit.interval.ms: 100
+              default:
+                key.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
+                value.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
+          bindings:
+            process-out-0:
+              producer:
+                keySerde: org.apache.kafka.common.serialization.Serdes$StringSerde
+                valueSerde: org.apache.kafka.common.serialization.Serdes$LongSerde
